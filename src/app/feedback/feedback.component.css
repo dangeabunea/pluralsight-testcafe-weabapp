@@ -1,3 +1,11 @@
 .invalid-input{
   color: red;
 }
+
+.feedback-header {
+  margin-bottom: 20px;
+}
+
+.feedback-container {
+  margin-top: 20px;
+}
