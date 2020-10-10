@@ -13,6 +13,7 @@ import {NoteComponent} from './notes/note/note.component';
 import {NoteTextFilterPipe} from './shared/note-text-filter.pipe';
 import {LoginComponent} from './login/login.component';
 import {AuthenticatedGuard} from './shared/authenticated.guard';
+import {NotAuthenticatedGuard} from './shared/not-authenticated.guard';
 
 const appRoutes: Routes = [
   {
@@ -28,7 +29,8 @@ const appRoutes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    pathMatch: 'full'
+    pathMatch: 'full',
+    canActivate: [NotAuthenticatedGuard]
   },
   {
     path: '',
