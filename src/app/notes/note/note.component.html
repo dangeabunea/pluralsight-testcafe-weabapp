@@ -1,23 +1,22 @@
 <div class="card note">
-  <div class="card-body" style="padding: 8px; margin-top: 8px;">
+  <div class="card-body note-body">
     <div>
       <!-- title -->
       <input type="text"
              [(ngModel)]="note.title"
              (change)="updateNote()"
-             style="cursor: initial!important;"
-             class="input-label-lg"
-             maxlength="18" style="width: 80%"
-      />
-      <a (click)="deleteNote()" class="pull-right text-danger" style="cursor: pointer">
-        <i class="fa fa-trash-o"></i>
+             class="input-label-lg note-title-input"
+             maxlength="18"/>
+      <a (click)="deleteNote()" class="text-danger note-delete-btn">
+        <i class="fa fa-remove"></i>
       </a>
     </div>
     <!-- text -->
-    <textarea class="input-label"
-              style="width: 100%; cursor: initial" rows="6"
+    <textarea class="input-label note-text-input"
+              rows="4"
+              maxlength="100"
               [(ngModel)]="note.text"
-              (change)="updateNote()"></textarea>
-    <strong class="text-info" style="font-size: small">{{note.lastModifiedOn | date:'dd-MM-yyy HH:mm'}}</strong>
+              (change)="updateNote()">
+    </textarea>
   </div>
 </div>

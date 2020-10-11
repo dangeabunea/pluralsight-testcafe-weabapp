@@ -6,13 +6,11 @@
 .input-label {
   background: rgba(0, 0, 0, 0);
   border: none;
-  cursor: pointer;
 }
 
 .input-label-lg {
   background: rgba(0, 0, 0, 0);
   border: none;
-  cursor: pointer;
   font-size: large;
   font-weight: bold;
 }

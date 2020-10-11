@@ -1,4 +1,25 @@
-.note{
-  background-color: #F9E79F;
-  border:4px solid white;
+.note {
+  background-color: #FCF3CF;
+  border: 4px solid white;
+}
+
+.note-body {
+  padding: 8px;
+  margin-top: 8px;
+}
+
+.note-title-input {
+  cursor: text;
+  width: 80%;
+}
+
+.note-text-input {
+  cursor: text;
+  width: 100%;
+  resize: none;
+}
+
+.note-delete-btn {
+  cursor: pointer;
+  float: right;
 }

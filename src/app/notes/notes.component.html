@@ -1,33 +1,35 @@
 <div class="container-fluid">
   <!-- Note menu -->
   <div class="row" style="margin-top:12px;">
-    <div class="col-md-8">
-      <input type="text"
-             [(ngModel)]="searchText"
-             class="form-control"
-             style="width: 100%;"
-             placeholder="Search notes...">
-    </div>
+    <div class="offset-8"></div>
     <div class="col-md-4">
       <button type="buton"
               (click)="createNotebook()"
-              class="btn btn-info pull-right"
-              style="margin-left:12px;"><i class="fa fa-plus"></i> New notebook
+              class="btn btn-dark pull-right"
+              style="margin-left:12px;"><i class="fa fa-book"></i> New notebook
       </button>
       <button type="button"
               (click)="createNote(selectedNotebook.id)"
               [disabled]="selectedNotebook == null"
-              class="btn btn-warning pull-right"
-              style="margin-left:12px;"><i class="fa fa-plus"></i> New note
+              class="btn btn-dark pull-right"
+              style="margin-left:12px;"><i class="fa fa-sticky-note"></i> New note
       </button>
     </div>
 
   </div>
-
+  <div class="row">
+    <div class="col-md-12">
+        <input type="text"
+               [(ngModel)]="searchText"
+               class="form-control pull-right"
+               style="width: 100%; margin-top:12px;"
+               placeholder="Search notes...">
+    </div>
+  </div>
   <!-- Note content -->
   <div class="row" style="margin-top: 28px;">
     <!-- Notebooks Menu -->
-    <div class="col-md-2">
+    <div class="col-md-3">
       <br>
       <div class="list-group list-group-flush">
         <a (click)="selectAllNotes()" class="list-group-item list-group-item-action">
@@ -38,14 +40,14 @@
           <i class="fa fa-book"></i>&nbsp;
           <input [(ngModel)]="notebook.name" (change)="updateNotebook(notebook)" type="text" class="input-label" style="width: 80%"/>
           <a (click)="deleteNotebook(notebook)" class="pull-right text-danger">
-            <i class="fa fa-trash-o"></i>
+            <i class="fa fa-remove"></i>
           </a>
         </a>
       </div>
     </div>
 
     <!-- Notes Panel -->
-    <div class="col-md-10">
+    <div class="col-md-9">
       <div class="row">
         <div class="col-md-12">
           <!-- Message if there are no notes -->
