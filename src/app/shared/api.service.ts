@@ -4,6 +4,7 @@ import {Observable} from "rxjs";
 import {Notebook} from "../notes/model/notebook";
 import {FeedbackViewModel} from "../feedback/feedback.component";
 import {Note} from "../notes/model/note";
+import {DataRepository} from './data-repository.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,12 +20,12 @@ export class ApiService {
   private SAVE_UPDATE_NOTE_URL = `${this.BASE_URL}/notes`;
   private DELETE_NOTE_URL = `${this.BASE_URL}/notes/`;
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private _dataRepository: DataRepository) {
 
   }
 
-  getAllNotebooks(): Observable<Notebook[]> {
-    return this.http.get<Notebook[]>(this.ALL_NOTEBOOKS_URL);
+  getAllNotebooks(): Notebook[] {
+    return this._dataRepository.getNotebooks();
   }
 
   postFeedback(feedback: FeedbackViewModel): Observable<any> {
@@ -39,12 +40,13 @@ export class ApiService {
     return this.http.delete(this.DELETE_NOTEBOOK_URL + id);
   }
 
-  getAllNotes(): Observable<Note[]> {
-    return this.http.get<Note[]>(this.ALL_NOTES_URL);
+  getAllNotes(): Note[] {
+    return this._dataRepository.getNotes();
   }
 
-  getNotesByNotebook(notebookId: string): Observable<Note[]> {
-    return this.http.get<Note[]>(this.NOTES_BY_NOTEBOOK_URL + notebookId);
+  getNotesByNotebook(notebookId: string): Note[] {
+    const allNotes = this._dataRepository.getNotes();
+    return allNotes.filter(x => x.notebookId === notebookId);
   }
 
   saveNote(note: Note): Observable<Note> {

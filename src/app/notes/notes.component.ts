@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {Notebook} from "./model/notebook";
-import {ApiService} from "../shared/api.service";
-import {Note} from "./model/note";
+import {Notebook} from './model/notebook';
+import {ApiService} from '../shared/api.service';
+import {Note} from './model/note';
+import {DataRepository} from '../shared/data-repository.service';
 
 @Component({
   selector: 'app-notes',
@@ -17,34 +18,22 @@ export class NotesComponent implements OnInit {
   constructor(private apiService: ApiService) {
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.getAllNotebooks();
     this.getAllNotes();
   }
 
   public getAllNotebooks() {
-    this.apiService.getAllNotebooks().subscribe(
-      res => {
-        this.notebooks = res;
-      },
-      err => {
-        alert("An error has occurred;")
-      }
-    );
+    this.notebooks = this.apiService.getAllNotebooks();
   }
 
   getAllNotes(){
-    this.apiService.getAllNotes().subscribe(
-      res => {
-        this.notes = res;
-      },
-      err => {alert("Error occurred while downloading the notes;")}
-    );
+    this.notes = this.apiService.getAllNotes();
   }
 
   createNotebook() {
-    let newNotebook:Notebook = {
-      name:'New notebook',
+    const newNotebook: Notebook = {
+      name: 'New notebook',
       id: null,
       nbOfNotes: 0
     };
@@ -54,7 +43,7 @@ export class NotesComponent implements OnInit {
         newNotebook.id = res.id;
         this.notebooks.push(newNotebook);
       },
-      err => {alert("An error has occurred while saving the notebook");}
+      err => {alert('An error has occurred while saving the notebook'); }
     );
 
   }
@@ -64,43 +53,43 @@ export class NotesComponent implements OnInit {
       res => {
 
       },
-      err => {alert("An error has occurred while saving the notebook");}
+      err => {alert('An error has occurred while saving the notebook'); }
     );
   }
 
   deleteNotebook(notebook: Notebook) {
-    if(confirm("Are you sure you want to delete notebook?")){
+    if (confirm('Are you sure you want to delete notebook?')){
       this.apiService.deleteNotebook(notebook.id).subscribe(
         res => {
-          let indexOfNotebook = this.notebooks.indexOf(notebook);
-          this.notebooks.splice(indexOfNotebook,1);
+          const indexOfNotebook = this.notebooks.indexOf(notebook);
+          this.notebooks.splice(indexOfNotebook, 1);
         },
         err => {
-          alert("Could not delete notebook");
+          alert('Could not delete notebook');
         }
       );
     }
   }
 
   deleteNote(note: Note){
-    if(confirm("Are you sure you want to delete this note?")){
+    if (confirm('Are you sure you want to delete this note?')){
       this.apiService.deleteNote(note.id).subscribe(
-        res =>{
-          let indexOfNote = this.notes.indexOf(note);
+        res => {
+          const indexOfNote = this.notes.indexOf(note);
           this.notes.splice(indexOfNote, 1);
         },
-        err=>{alert("An error has occurred deleting the note");}
+        err => {alert('An error has occurred deleting the note'); }
       );
     }
   }
 
   createNote(notebookId: string) {
-    let newNote:Note = {
+    const newNote: Note = {
       id: null,
-      title: "New Note",
-      text: "Write some text in here",
+      title: 'New Note',
+      text: 'Write some text in here',
       lastModifiedOn: null,
-      notebookId: notebookId
+      notebookId
     };
 
     this.apiService.saveNote(newNote).subscribe(
@@ -108,25 +97,20 @@ export class NotesComponent implements OnInit {
         newNote.id = res.id;
         this.notes.push(newNote);
       },
-      err => {alert("An error occurred while saving the note");}
+      err => {alert('An error occurred while saving the note'); }
     );
   }
 
   selectNotebook(notebook: Notebook) {
     this.selectedNotebook = notebook;
-    this.apiService.getNotesByNotebook(notebook.id).subscribe(
-      res=> {
-        this.notes = res;
-      },
-      err =>{alert("An error has occurred while downloading the notes;")}
-    );
+    this.notes = this.apiService.getNotesByNotebook(notebook.id);
   }
 
   updateNote(updatedNote: Note) {
     this.apiService.saveNote(updatedNote).subscribe(
       res => {
       },
-      err => {alert("An error occurred while saving the note");}
+      err => {alert('An error occurred while saving the note'); }
     );
   }
 
