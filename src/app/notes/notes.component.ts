@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Notebook} from './model/notebook';
 import {Note} from './model/note';
 import {DataRepository} from '../shared/data-repository.service';
+import {LoginService} from '../shared/login.service';
 
 @Component({
   selector: 'app-notes',
@@ -14,7 +15,7 @@ export class NotesComponent implements OnInit {
   private _selectedNotebook: Notebook;
   private _searchText: string;
 
-  constructor(private _dataRepository: DataRepository) {
+  constructor(private _dataRepository: DataRepository, private _loginService: LoginService) {
   }
 
   public ngOnInit(): void {
@@ -43,8 +44,10 @@ export class NotesComponent implements OnInit {
   }
 
   public createNotebook() {
-    const newNotebook: Notebook = new Notebook('New Notebook');
-    this.notebooks.push(newNotebook);
+    if (this._loginService.hasPremiumSubscription) {
+      const newNotebook: Notebook = new Notebook('New Notebook');
+      this.notebooks.push(newNotebook);
+    }
   }
 
   public deleteNotebook(notebook: Notebook) {
@@ -85,5 +88,9 @@ export class NotesComponent implements OnInit {
       return this.notes.filter(x => x.notebookId === this.selectedNotebook.id);
     }
     return this.notes;
+  }
+
+  public get canCreateNotebook(): boolean {
+    return this._loginService.hasPremiumSubscription;
   }
 }

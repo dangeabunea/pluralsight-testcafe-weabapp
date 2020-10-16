@@ -9,8 +9,8 @@
 
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" routerLink="/notes">Notes </a>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/notes">Notes</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" routerLink="/feedback">Feedback</a>
@@ -23,7 +23,7 @@
         <span *ngIf="userIsPremiumMember" class="badge badge-warning">Premium</span>
         <span *ngIf="!userIsPremiumMember" class="badge badge-light">Standard</span>
       </div>
-      <button (click)="signOut()" class="btn btn-light my-2 my-sm-0" type="submit"><i class="fa fa-sign-out"></i> Log out</button>
+      <button (click)="signOut()" class="btn btn-light my-2 my-sm-0" type="submit"><i class="fa fa-sign-out">&nbsp;</i>Log out</button>
     </form>
   </div>
 </nav>

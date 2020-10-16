@@ -23,7 +23,7 @@ export class DataRepository {
 
   private init(): void {
       const defaultNotebook: Notebook = new Notebook('Sample');
-      const nextWeekNotebook: Notebook = new Notebook('Next Week');
+      const nextWeekNotebook: Notebook = new Notebook('This Week');
 
       const defaultNote: Note = new Note('Sample Note', 'This is a sample note', defaultNotebook.id);
       const goShoppingNote: Note = new Note('Shopping', 'Buy some top quality groceries', nextWeekNotebook.id);
