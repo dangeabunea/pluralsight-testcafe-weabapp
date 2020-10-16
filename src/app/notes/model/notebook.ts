@@ -1,5 +1,11 @@
-export interface Notebook {
+import {v4 as uuidv4} from 'uuid';
+
+export class Notebook {
   id: string;
   name: string;
-  nbOfNotes: number;
+
+  constructor(name: string) {
+    this.id = uuidv4();
+    this.name = name;
+  }
 }

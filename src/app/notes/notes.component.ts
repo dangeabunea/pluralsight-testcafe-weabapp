@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {Notebook} from './model/notebook';
-import {ApiService} from '../shared/api.service';
 import {Note} from './model/note';
 import {DataRepository} from '../shared/data-repository.service';
 
@@ -10,112 +9,81 @@ import {DataRepository} from '../shared/data-repository.service';
   styleUrls: ['./notes.component.css']
 })
 export class NotesComponent implements OnInit {
-  notebooks: Notebook[] = [];
-  notes: Note[] = [];
-  selectedNotebook: Notebook;
-  searchText: string;
+  private _notebooks: Notebook[] = [];
+  private _notes: Note[] = [];
+  private _selectedNotebook: Notebook;
+  private _searchText: string;
 
-  constructor(private apiService: ApiService) {
+  constructor(private _dataRepository: DataRepository) {
   }
 
   public ngOnInit(): void {
-    this.getAllNotebooks();
-    this.getAllNotes();
+    this._notebooks = this._dataRepository.getNotebooks();
+    this._notes = this._dataRepository.getNotes();
   }
 
-  public getAllNotebooks() {
-    this.notebooks = this.apiService.getAllNotebooks();
+  public get searchText(): string {
+    return this._searchText;
   }
 
-  getAllNotes(){
-    this.notes = this.apiService.getAllNotes();
+  public set searchText(value: string) {
+    this._searchText = value;
   }
 
-  createNotebook() {
-    const newNotebook: Notebook = {
-      name: 'New notebook',
-      id: null,
-      nbOfNotes: 0
-    };
-
-    this.apiService.postNotebook(newNotebook).subscribe(
-      res => {
-        newNotebook.id = res.id;
-        this.notebooks.push(newNotebook);
-      },
-      err => {alert('An error has occurred while saving the notebook'); }
-    );
-
+  public get selectedNotebook(): Notebook {
+    return this._selectedNotebook;
   }
 
-  updateNotebook(updatedNotebook: Notebook) {
-    this.apiService.postNotebook(updatedNotebook).subscribe(
-      res => {
-
-      },
-      err => {alert('An error has occurred while saving the notebook'); }
-    );
+  public get notes(): Note[] {
+    return this._notes;
   }
 
-  deleteNotebook(notebook: Notebook) {
-    if (confirm('Are you sure you want to delete notebook?')){
-      this.apiService.deleteNotebook(notebook.id).subscribe(
-        res => {
-          const indexOfNotebook = this.notebooks.indexOf(notebook);
-          this.notebooks.splice(indexOfNotebook, 1);
-        },
-        err => {
-          alert('Could not delete notebook');
-        }
-      );
+  public get notebooks(): Notebook[] {
+    return this._notebooks;
+  }
+
+  public createNotebook() {
+    const newNotebook: Notebook = new Notebook('New Notebook');
+    this.notebooks.push(newNotebook);
+  }
+
+  public deleteNotebook(notebook: Notebook) {
+    if (confirm('Are you sure you want to delete notebook?')) {
+      const indexOfNotebook = this.notebooks.indexOf(notebook);
+      const notesInNotebook = this.notes.filter(x => x.notebookId === notebook.id);
+      notesInNotebook.forEach(x => {
+        const index = this.notes.indexOf(x);
+        this.notes.splice(index, 1);
+      });
+      this.notebooks.splice(indexOfNotebook, 1);
+      this.selectAllNotes();
     }
   }
 
-  deleteNote(note: Note){
-    if (confirm('Are you sure you want to delete this note?')){
-      this.apiService.deleteNote(note.id).subscribe(
-        res => {
-          const indexOfNote = this.notes.indexOf(note);
-          this.notes.splice(indexOfNote, 1);
-        },
-        err => {alert('An error has occurred deleting the note'); }
-      );
+  public deleteNote(note: Note) {
+    if (confirm('Are you sure you want to delete this note?')) {
+      const indexOfNotebook = this.notes.indexOf(note);
+      this.notes.splice(indexOfNotebook, 1);
     }
   }
 
-  createNote(notebookId: string) {
-    const newNote: Note = {
-      id: null,
-      title: 'New Note',
-      text: 'Write some text in here',
-      lastModifiedOn: null,
-      notebookId
-    };
-
-    this.apiService.saveNote(newNote).subscribe(
-      res => {
-        newNote.id = res.id;
-        this.notes.push(newNote);
-      },
-      err => {alert('An error occurred while saving the note'); }
-    );
+  public createNote(notebookId: string) {
+    const newNote: Note = new Note('', '', notebookId);
+    this.notes.push(newNote);
   }
 
-  selectNotebook(notebook: Notebook) {
-    this.selectedNotebook = notebook;
-    this.notes = this.apiService.getNotesByNotebook(notebook.id);
+  public selectNotebook(notebook: Notebook) {
+    this._selectedNotebook = notebook;
   }
 
-  updateNote(updatedNote: Note) {
-    this.apiService.saveNote(updatedNote).subscribe(
-      res => {
-      },
-      err => {alert('An error occurred while saving the note'); }
-    );
+  public selectAllNotes() {
+    this._selectedNotebook = null;
   }
 
-  selectAllNotes() {
-    this.selectedNotebook = null;
-    this.getAllNotes();
+  public get displayedNotes(): Note[] {
+    if (this.selectedNotebook) {
+      return this.notes.filter(x => x.notebookId === this.selectedNotebook.id);
+    }
+    return this.notes;
   }
 }

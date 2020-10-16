@@ -38,7 +38,7 @@
         <!-- Notebook List -->
         <a *ngFor="let notebook of notebooks" (click)="selectNotebook(notebook)" class="list-group-item list-group-item-action">
           <i class="fa fa-book"></i>&nbsp;
-          <input [(ngModel)]="notebook.name" (change)="updateNotebook(notebook)" type="text" class="input-label" style="width: 80%"/>
+          <input [(ngModel)]="notebook.name" type="text" class="input-label" style="width: 80%"/>
           <a (click)="deleteNotebook(notebook)" class="pull-right text-danger">
             <i class="fa fa-remove"></i>
           </a>
@@ -53,14 +53,13 @@
           <!-- Message if there are no notes -->
           <h3 *ngIf="selectedNotebook != null">{{selectedNotebook.name}}</h3>
           <h3 *ngIf="selectedNotebook == null">All notes</h3>
-          <p *ngIf="this.notes.length === 0">There are no notes to display in this notebook :(</p>
+          <p *ngIf="this.displayedNotes.length === 0">There are no notes to display in this notebook :(</p>
         </div>
       </div>
       <div class="row">
         <!-- Note list -->
-        <app-note *ngFor="let n of notes | noteTextFilter:searchText"
+        <app-note *ngFor="let n of displayedNotes | noteTextFilter:searchText"
                   [note]="n"
-                  (noteUpdated)="updateNote($event)"
                   (noteDeleted)="deleteNote($event)">
         </app-note>
       </div>
