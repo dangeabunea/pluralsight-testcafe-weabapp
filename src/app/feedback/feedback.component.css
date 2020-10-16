@@ -1,5 +1,5 @@
-.invalid-input{
-  color: red;
+::ng-deep .text-danger{
+  font-weight: bold;
 }
 
 .feedback-header {

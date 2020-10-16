@@ -1,4 +1,5 @@
 import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-feedback',
@@ -6,35 +7,46 @@ import {Component, OnInit} from '@angular/core';
   styleUrls: ['./feedback.component.css']
 })
 export class FeedbackComponent implements OnInit {
-  model: FeedbackViewModel = {
-    name: '',
-    email: '',
-    feedback: ''
-  };
+  private readonly _feedbackModel: FormGroup;
+  private _submitted = false;
+  private _submitOk = false;
+  private _submitFail = false;
 
-  constructor() {
+  constructor(private _fb: FormBuilder) {
+    this._feedbackModel = _fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      rating: ['', Validators.required],
+      feedback: ['']
+    });
   }
 
   ngOnInit() {
   }
 
-  sendFeedback(): void {
-    /*
-    this.apiService.postFeedback(this.model).subscribe(
-      res => {
-        location.reload();
-      },
-      err => {
-        alert("An error has occurred while sending feedback");
-      }
-    );
-     */
+  public get submitted(): boolean {
+    return this._submitted;
   }
 
+  public get feedbackModel(): FormGroup {
+    return this._feedbackModel;
+  }
+
+  public get submitFail(): boolean {
+    return this._submitFail;
+  }
+
+  public get submitOk(): boolean {
+    return this._submitOk;
+  }
+
+  sendFeedback(): void {
+    this._submitted = true;
+    if (this._feedbackModel.invalid) {
+      this._submitOk = false;
+    } else {
+      this._submitOk = true;
+    }
+  }
 }
 
-export interface FeedbackViewModel {
-  name: string;
-  email: string;
-  feedback: string;
-}
+
