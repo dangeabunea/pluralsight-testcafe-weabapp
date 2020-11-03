@@ -9,5 +9,5 @@ A sample Angular application used for the "Automated Browser Testing Using TestC
 ## Run the App
 
 - Navigate to the root folder
-- Run the following command ``npm install``
+- Run the following command ``npm install`` (only need to do this once, after you download the source code)
 - Start the app by executing the following command ``npm run start`` 
