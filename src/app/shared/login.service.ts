@@ -4,10 +4,10 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class LoginService {
-  private _isAuthenticated: boolean;
-  private _hasPremiumSubscription: boolean;
-  private _userName: string;
-  private _nbFailedAuthentications: number;
+  private _isAuthenticated: boolean = false;
+  private _hasPremiumSubscription: boolean = false;
+  private _userName: string = '';
+  private _nbFailedAuthentications: number = 0;
   private readonly _loginSessionStorageKey = 'rc-testcafe-sample-app-user';
 
   constructor() {
@@ -59,8 +59,8 @@ export class LoginService {
 
   private readFromSessionStorage(): void {
     const loginInformationString = sessionStorage.getItem(this._loginSessionStorageKey);
-    const loginInformationJson = JSON.parse(loginInformationString);
-    if (loginInformationString && loginInformationJson) {
+    if (loginInformationString) {
+      const loginInformationJson = JSON.parse(loginInformationString);
       this._userName = loginInformationJson.userName;
       this._isAuthenticated = loginInformationJson.isAuthenticated;
       this._hasPremiumSubscription = loginInformationJson.hasPremiumSubscription;

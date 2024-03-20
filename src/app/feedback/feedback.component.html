@@ -17,7 +17,7 @@
     <div class="col-md-6">
       <form name="form" class="feedback-form" [formGroup]="feedbackModel" (ngSubmit)="sendFeedback()">
         <!-- Email -->
-        <div class="form-group" [ngClass]="{'text-danger': feedbackModel.controls.email.invalid && submitted}">
+        <div class="form-group" [ngClass]="{'text-danger': feedbackModel.controls['email'].invalid && submitted}">
           <label for="email">Email</label>
           <input type="email"
                  id="email"
@@ -27,7 +27,7 @@
         </div>
 
         <!-- Rating -->
-        <div class="form-group" [ngClass]="{'text-danger': feedbackModel.controls.rating.invalid && submitted}">
+        <div class="form-group" [ngClass]="{'text-danger': feedbackModel.controls['rating'].invalid && submitted}">
           <label for="rating">How would you rate this app</label>
           <select id="rating" name="rating" formControlName="rating" class="form-control">
             <option value="1">Poor</option>

@@ -12,8 +12,8 @@ import {LoginService} from '../shared/login.service';
 export class NotesComponent implements OnInit {
   private _notebooks: Notebook[] = [];
   private _notes: Note[] = [];
-  private _selectedNotebook: Notebook;
-  private _searchText: string;
+  private _selectedNotebook: Notebook | null = null;
+  private _searchText: string = '';
 
   constructor(private _dataRepository: DataRepository, private _loginService: LoginService) {
   }
@@ -31,7 +31,7 @@ export class NotesComponent implements OnInit {
     this._searchText = value;
   }
 
-  public get selectedNotebook(): Notebook {
+  public get selectedNotebook(): Notebook | null {
     return this._selectedNotebook;
   }
 
@@ -85,6 +85,7 @@ export class NotesComponent implements OnInit {
 
   public get displayedNotes(): Note[] {
     if (this.selectedNotebook) {
+      // @ts-ignore
       return this.notes.filter(x => x.notebookId === this.selectedNotebook.id);
     }
     return this.notes;
